@@ -60,7 +60,7 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
       // Define the resolution to use.
       ResolutionPreset.high,
     );
-    speak("Kamera Kullanıma hazır  in it state");
+    speak("Kamera Kullanıma hazır" + " Kamerayı kullanmak için ekranın altına basın");
 
     // Next, initialize the controller. This returns a Future.
     _initializeControllerFuture = _controller.initialize();
@@ -308,7 +308,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
       if (output == null) {
         runTextToSpeech("Para tanımlanırken bir sorun yaşandı", total);
         print('para tanımlamada sorun var output yok aw');
-        useTheTimerForTurning();
+        //useTheTimerForTurning();
       } else
         op = output;
 
@@ -328,7 +328,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
               textColor: Colors.red,
               fontSize: 16.0
           );
-          useTheTimerForTurning();
+          //useTheTimerForTurning();
         }
         else if (op[0]["label"] == "10") {
           total += 10;
@@ -344,7 +344,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
               textColor: Colors.red,
               fontSize: 16.0
           );
-          useTheTimerForTurning();
+          //useTheTimerForTurning();
         }
         else if (op[0]["label"] == "20") {
           total += 20;
@@ -360,7 +360,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
               textColor: Colors.red,
               fontSize: 16.0
           );
-          useTheTimerForTurning();
+          //useTheTimerForTurning();
         }
         else if (op[0]["label"] == "50") {
           total += 50;
@@ -376,7 +376,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
               textColor: Colors.red,
               fontSize: 16.0
           );
-          useTheTimerForTurning();
+          //useTheTimerForTurning();
 
         }
         else if (op[0]["label"] == "100") {
@@ -393,7 +393,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
               textColor: Colors.red,
               fontSize: 16.0
           );
-          useTheTimerForTurning();
+          //useTheTimerForTurning();
         }
 
         else if (op[0]["label"] == "200") {
@@ -410,13 +410,13 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
               textColor: Colors.red,
               fontSize: 16.0
           );
-          useTheTimerForTurning();
+          //useTheTimerForTurning();
         }
         else{
           String tot = total.toString();
           speak("Para Tanımlanamadı "+ tot);
           print('hebede para yok aw');
-          useTheTimerForTurning();
+          //useTheTimerForTurning();
         }
       }
 
@@ -432,20 +432,20 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     super.dispose();
   }
 
-  useTheTimerForTurning() async{
-
-    Timer(Duration(seconds:3),(){
-      setState(() {
-
-        speak("Kamera Ekranına Yönlendiriliyor");
-        //main();
-
-       // Navigator.pop(context);
-       //     context,
-       //     MaterialPageRoute(
-       //     builder: (context) => TakePictureScreen(camera: firstCamera),
-
-      });
-    });
-  }
+  //useTheTimerForTurning() async{
+//
+  //  Timer(Duration(seconds:3),(){
+  //    setState(() {
+//
+  //      //speak("Kamera Ekranına Yönlendiriliyor");
+  //      //main();
+//
+  //     // Navigator.pop(context);
+  //     //     context,
+  //     //     MaterialPageRoute(
+  //     //     builder: (context) => TakePictureScreen(camera: firstCamera),
+//
+  //    });
+  //  });
+  //}
 }
