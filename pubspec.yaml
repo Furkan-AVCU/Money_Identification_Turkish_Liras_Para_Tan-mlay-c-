@@ -55,7 +55,8 @@ flutter:
   assets:
      - assets/hebe.jpeg
      - assets/labels.txt
-     - assets/my_model.tflite
+     - assets/model_unquant.tflite
+     #- assets/haydi_model.tflite
 
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

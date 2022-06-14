@@ -5,6 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 //import 'package:torch_compat/torch_compat.dart';
+import 'dart:async';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:tflite/tflite.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -41,6 +42,7 @@ class TakePictureScreen extends StatefulWidget {
 
   @override
   _TakePictureScreenState createState() => _TakePictureScreenState();
+
 }
 
 class _TakePictureScreenState extends State<TakePictureScreen> {
@@ -58,10 +60,11 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
       // Define the resolution to use.
       ResolutionPreset.high,
     );
+    speak("Kamera Kullanıma hazır  in it state");
 
     // Next, initialize the controller. This returns a Future.
     _initializeControllerFuture = _controller.initialize();
-    speak("Kamera Kullanıma hazır");
+
   }
 
   @override
@@ -75,7 +78,6 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Center(child: Text('Noteify'))),
       // Wait until the controller is initialized before displaying the
       // camera preview. Use a FutureBuilder to display a loading spinner
       // until the controller has finished initializing.
@@ -83,10 +85,12 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
+            speak("Kameraya bağlanılıyor");
             // If the Future is complete, display the preview.
             return CameraPreview(_controller);
           } else {
             // Otherwise, display a loading indicator.
+            speak("Kamera Kullanıma hazır elseee");
             return Center(child: CircularProgressIndicator());
           }
         },
@@ -97,9 +101,9 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
           Center(
             child: Container(
               height: 180.0,
-              width: 180.0,
+              width: double.infinity,
               child: FittedBox(
-                child: FloatingActionButton(
+                child: ElevatedButton(
                   child: Icon(Icons.camera_alt),
                   // Provide an onPressed callback.
                   onPressed: () async {
@@ -168,6 +172,15 @@ class DisplayPictureScreen extends StatefulWidget {
 class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   List op;
   Image img;
+  File file;
+
+  speak(String textToSpeech) async {
+    await flutterTts.setLanguage("tr-TR");
+    await flutterTts.setPitch(0.8);
+    await flutterTts.awaitSpeakCompletion(true);
+    await flutterTts.speak(textToSpeech);
+
+  }
 
   @override
   void initState() {
@@ -175,6 +188,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     loadModel().then((value) {
       setState(() {});
     });
+
 
     img = Image.file(File(widget.imagePath));
     classifyImage(widget.imagePath);
@@ -185,8 +199,35 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
    // Image img = Image.file(File(widget.imagePath));
    // classifyImage(widget.imagePath);
 
+    Timer(Duration(seconds:3),(){
+      setState(() {
+        //speak("Kamera Ekranına Yönlendiriliyor");
+
+        //Timer(Duration(seconds:2),(){
+        //  setState(() async {
+        //    //main();
+        //    //Navigator.pop(context);
+        //    //main();
+//
+        //  });
+//
+        //});
+
+
+
+
+        //Navigator.push(
+        //    context,
+        //    MaterialPageRoute(builder: (context) => const TakePictureScreen(camera: firstCamera)),
+        // Navigator.pop(context);
+        //     context,
+        //     MaterialPageRoute(
+        //     builder: (context) => TakePictureScreen(camera: firstCamera),
+
+      });
+    });
+
     return Scaffold(
-      appBar: AppBar(title: Text('Display the Picture')),
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
       body: Container(
@@ -205,15 +246,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
 
   loadModel() async {
     await Tflite.loadModel(
-        model: "assets/my_model.tflite", labels: "assets/labels.txt");
-  }
-
-  speak(String textToSpeech) async {
-    await flutterTts.setLanguage("tr-TR");
-    await flutterTts.setPitch(0.8);
-    await flutterTts.awaitSpeakCompletion(true);
-    await flutterTts.speak(textToSpeech);
-
+        model: "assets/model_unquant.tflite", labels: "assets/labels.txt");
   }
 
   Future<void> runTextToSpeech(String outputMoney, int totalMoney) async {
@@ -223,161 +256,196 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     if (outputMoney == "5") {
       String tot = totalMoney.toString();
       print(tot);
-      String speakString = "5 TL, Toplam Paranız, $tot";
+      String speakString = "5 TL, Toplam Paranız "+tot;
       speak(speakString);
     }
     else if (outputMoney == "10") {
       String tot = totalMoney.toString();
       print(tot);
-      String speakString = "10 TL, Toplam Paranız, $tot";
+      String speakString = "10 TL, Toplam Paranız "+tot;
       speak(speakString);
     }
     else if (outputMoney == "20") {
       String tot = totalMoney.toString();
       print(tot);
-      String speakString = "20 TL, Toplam Paranız, $tot";
+      String speakString = "20 TL, Toplam Paranız "+tot;
       speak(speakString);
     }
 
     else if (outputMoney == "50") {
       String tot = totalMoney.toString();
       print(tot);
-      String speakString = "50 TL, Toplam Paranız, $tot";
+      String speakString = "50 TL, Toplam Paranız "+tot;
       speak(speakString);
     }
 
     else if (outputMoney == "100") {
       String tot = totalMoney.toString();
       print(tot);
-      String speakString = "100 TL, Toplam Paranız, $tot";
+      String speakString = "100 TL, Toplam Paranız "+tot;
       speak(speakString);
     }
     else if (outputMoney == "200") {
       String tot = totalMoney.toString();
       print(tot);
-      String speakString = "200 TL, Toplam Paranız, $tot";
+      String speakString = "200 TL, Toplam Paranız "+tot;
       speak(speakString);
+    }else if (outputMoney == null) {
+      speak("Bir sorun yaşandı");
     }
   }
 
   classifyImage(String image) async {
     var output = await Tflite.runModelOnImage(
       path: image,
-      numResults: 6,
+      numResults: 2,
       threshold: 0.5,
       imageMean: 127.5,
       imageStd: 127.5,
     );
+    setState(() {
 
-    if (output == null) {
-      runTextToSpeech("Para tanımlanırken bir sorun yaşandı", total);
-      print('para tanımlamada sorun var output yok aw');
-    } else {
-      op = output;
-    }
-    if (op != null) {
-      print(op[0]);
-      if (op[0]["label"] == "5") {
-        total += 5;
-        runTextToSpeech("5 TL", total);
-        print('hebede 1223');
-        Fluttertoast.showToast(
-            msg: "5",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
+      if (output == null) {
+        runTextToSpeech("Para tanımlanırken bir sorun yaşandı", total);
+        print('para tanımlamada sorun var output yok aw');
+        useTheTimerForTurning();
+      } else
+        op = output;
 
+      if (op != null) {
+        print(op[0]);
+        if (op[0]["label"] == "5") {
+          total += 5;
+          String tot = total.toString();
+          speak("5 TL toplam para"+ tot+" TL ");
+          print('hebede 1223');
+          Fluttertoast.showToast(
+              msg: "5",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.white,
+              textColor: Colors.red,
+              fontSize: 16.0
+          );
+          useTheTimerForTurning();
+        }
+        else if (op[0]["label"] == "10") {
+          total += 10;
+          String tot = total.toString();
+          speak("10 TL toplam para"+ tot+" TL ");
+          print('hebede 10');
+          Fluttertoast.showToast(
+              msg: "10",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.white,
+              textColor: Colors.red,
+              fontSize: 16.0
+          );
+          useTheTimerForTurning();
+        }
+        else if (op[0]["label"] == "20") {
+          total += 20;
+          String tot = total.toString();
+          speak("20 TL toplam para"+ tot+" TL ");
+          print('hebede 20');
+          Fluttertoast.showToast(
+              msg: "20",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.white,
+              textColor: Colors.red,
+              fontSize: 16.0
+          );
+          useTheTimerForTurning();
+        }
+        else if (op[0]["label"] == "50") {
+          total += 50;
+          String tot = total.toString();
+          speak("50 TL toplam para"+ tot+" TL ");
+          print('hebede50');
+          Fluttertoast.showToast(
+              msg: "50",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.white,
+              textColor: Colors.red,
+              fontSize: 16.0
+          );
+          useTheTimerForTurning();
+
+        }
+        else if (op[0]["label"] == "100") {
+          total += 100;
+          String tot = total.toString();
+          speak("100 TL toplam para"+ tot+" TL ");
+          print('hebede 100');
+          Fluttertoast.showToast(
+              msg: "100",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.white,
+              textColor: Colors.red,
+              fontSize: 16.0
+          );
+          useTheTimerForTurning();
+        }
+
+        else if (op[0]["label"] == "200") {
+          total += 200;
+          String tot = total.toString();
+          speak("200 TL toplam para"+ tot+" TL ");
+          print('hebede 200');
+          Fluttertoast.showToast(
+              msg: "200",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.white,
+              textColor: Colors.red,
+              fontSize: 16.0
+          );
+          useTheTimerForTurning();
+        }
+        else{
+          String tot = total.toString();
+          speak("Para Tanımlanamadı "+ tot);
+          print('hebede para yok aw');
+          useTheTimerForTurning();
+        }
       }
-      else if (op[0]["label"] == "10") {
-        total += 10;
-        runTextToSpeech("10 TL", total);
-        print('hebede 10');
-        Fluttertoast.showToast(
-            msg: "10",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
 
-      }
-      else if (op[0]["label"] == "20") {
-        total += 20;
-        runTextToSpeech("20 TL", total);
-        print('hebede 20');
-        Fluttertoast.showToast(
-            msg: "20",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
 
-      }
-      else if (op[0]["label"] == "50") {
-        total += 50;
-        runTextToSpeech("50 TL", total);
-        print('hebede50');
-        Fluttertoast.showToast(
-            msg: "50",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
+    });
 
-      }
-      else if (op[0]["label"] == "100") {
-        total += 100;
-        runTextToSpeech("100 TL", total);
-        print('hebede 100');
-        Fluttertoast.showToast(
-            msg: "100",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
 
-      }
-
-      else if (op[0]["label"] == "200") {
-        total += 200;
-        runTextToSpeech("200 TL", total);
-        print('hebede 200');
-        Fluttertoast.showToast(
-            msg: "200",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
-
-      }
-    }
-      else{
-        runTextToSpeech("Para Tanımlanamadı", total);
-        print('hebede para yok aw');
-      }
   }
 
   @override
   void dispose() {
     Tflite.close();
     super.dispose();
+  }
+
+  useTheTimerForTurning() async{
+
+    Timer(Duration(seconds:3),(){
+      setState(() {
+
+        speak("Kamera Ekranına Yönlendiriliyor");
+        //main();
+
+       // Navigator.pop(context);
+       //     context,
+       //     MaterialPageRoute(
+       //     builder: (context) => TakePictureScreen(camera: firstCamera),
+
+      });
+    });
   }
 }
