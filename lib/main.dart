@@ -199,8 +199,8 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
    // Image img = Image.file(File(widget.imagePath));
    // classifyImage(widget.imagePath);
 
-    Timer(Duration(seconds:3),(){
-      setState(() {
+    //Timer(Duration(seconds:3),(){
+    //  setState(() {
         //speak("Kamera Ekranına Yönlendiriliyor");
 
         //Timer(Duration(seconds:2),(){
@@ -224,8 +224,8 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
         //     MaterialPageRoute(
         //     builder: (context) => TakePictureScreen(camera: firstCamera),
 
-      });
-    });
+   //  });
+   //});
 
     return Scaffold(
       // The image is stored as a file on the device. Use the `Image.file`
