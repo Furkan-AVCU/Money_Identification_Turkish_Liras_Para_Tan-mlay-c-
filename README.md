@@ -1,4 +1,4 @@
-# para_tanimlayici_porject_one
+# Money İdentification With TenserFlow-Lite
 
 With the help of artificial intelligence components such as image processing, deep learning, and mobile programming, the importance and use of which are increasing day by day, it is aimed to make a money identification mobile application to make the lives of people with visual disabilities easier. 
 
